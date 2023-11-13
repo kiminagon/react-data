@@ -1,25 +1,53 @@
-import { useState } from "react";
-
 export default function App() {
-  const [content, setContent] = useState("");
-  return (
-    <>
-      <h1>Fetch starting point</h1>
-      <form>
-        <label htmlFor="verse-choose">Choose a verse</label>
-        <select
-          id="verse-choose"
-        >
-          <option value="verse1">Verse 1</option>
-          <option value="verse2">Verse 2</option>
-          <option value="verse3">Verse 3</option>
-          <option value="verse4">Verse 4</option>
-        </select>
-      </form>
-      <h2>
-        The Conqueror Worm, <em>Edgar Allen Poe, 1843</em>
-      </h2>
-      <pre>{content}</pre>
-    </>
-  );
-}
+    return (
+      <>
+        <header>
+          <h1>The Can Store</h1>
+        </header>
+        <div>
+          <aside>
+            <form>
+              <div>
+                <label htmlFor="category">Choose a category:</label>
+                <select id="category">
+                  <option>All</option>
+                  <option>Vegetables</option>
+                  <option>Meat</option>
+                  <option>Soup</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="searchTerm">Enter search term:</label>
+                <input type="text" id="searchTerm" placeholder="e.g. beans" />
+              </div>
+              <div>
+                <button>Filter results</button>
+              </div>
+            </form>
+          </aside>
+          <main></main>
+        </div>
+        <footer>
+          <p>All icons found at the Noun Project:</p>
+          <ul>
+            <li>
+              Bean can icon by{" "}
+              <a href="https://thenounproject.com/yalanis/">Yazmin Alanis</a>
+            </li>
+            <li>
+              Vegetable icon by{" "}
+              <a href="https://thenounproject.com/skatakila/">Ricardo Moreira</a>
+            </li>
+            <li>
+              Soup icon by{" "}
+              <a href="https://thenounproject.com/ArtZ91/">Arthur Shlain</a>
+            </li>
+            <li>
+              Meat Chunk icon by{" "}
+              <a href="https://thenounproject.com/smashicons/">Oliviu Stoian</a>.
+            </li>
+          </ul>
+        </footer>
+      </>
+    );
+  }
