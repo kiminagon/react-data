@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
+async function fetchProducts(category, keyword){
+  const response = await fetch("products.json");
+  const data = await response.json();
+  return data.filter((item) =>{
+    return (
+    (category === 'all' || category === item.type) && 
+    item.name.includes(keyword)
+    );
+  });
+}
+
 export default function App() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // Fetch APIを使用してJSONデータを取得する
-    fetch('products.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        // 取得したデータをReactのstateに設定する
-        setProducts(data);
-      })
-      .catch(error => {
-        console.error('Fetch error:', error);
-      });
-  }, []); // 空の依存配列を渡すことで、マウント時のみ実行される
+    (async () => {
+      const data = await fetchProducts("all");
+      setProducts(data);
+    })();
+  }, []);
 
   return (
     <>
@@ -28,19 +28,25 @@ export default function App() {
       </header>
       <div>
         <aside>
-        <form>
+        <form onSubmit={async (event) => {
+          event.preventDefault()
+          const category = event.target.elements.category.value
+          const keyword = event.target.elements.keyword.value
+          const data = await fetchProducts(category, keyword)
+          setProducts(data);
+        }}>
             <div>
               <label htmlFor="category">Choose a category:</label>
-              <select id="category">
-                <option>All</option>
-                <option>Vegetables</option>
-                <option>Meat</option>
-                <option>Soup</option>
+              <select id="category" name ='category'>
+                <option value = "all">All</option>
+                <option value = "vegetables">Vegetables</option>
+                <option value = "meat">Meat</option>
+                <option value = "soup">Soup</option>
               </select>
             </div>
             <div>
               <label htmlFor="searchTerm">Enter search term:</label>
-              <input type="text" id="searchTerm" placeholder="e.g. beans" />
+              <input type="text" id="searchTerm" name = "keyword" placeholder="e.g. beans" />
             </div>
             <div>
               <button>Filter results</button>
@@ -48,18 +54,19 @@ export default function App() {
           </form>
         </aside>
         <main>
-            <ul>
-            {products.map(product => (
-              <div key={product.name} className={product.type}>
-                <h2>{product.name}</h2>
-                <p>{product.price}</p>
+            {products.map((product) => {
+              return(
+              <section key={product.name} className={product.type}>
+                <h2>{product.name[0].toUpperCase()}
+                {product.name.slice(1)}</h2>
+                <p>${product.price}</p>
                 <img
                   src={`images/${product.image}`}
                   alt={product.name}
                 />
-                </div>
-            ))}
-            </ul>
+                </section>
+            );
+            })}
         </main>
       </div>
       <footer>
